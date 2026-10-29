@@ -71,6 +71,18 @@ return [
             'engine' => null,
         ],
 
+        // KONEKSI KE DATABASE SIPERDI (TAMBAHKAN INI)
+        'siperdi' => [
+            'driver' => 'mysql',
+            'host' => '127.0.0.1',
+            'port' => '3306',
+            'database' => 'SiPerdi', // <-- SESUAIKAN DENGAN NAMA DB SIPERDI ANDA
+            'username' => 'root',
+            'password' => 'entersaja',
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+        ],
+
         'mariadb' => [
             'driver' => 'mariadb',
             'url' => env('DB_URL'),

@@ -10,9 +10,7 @@
 
         {{-- Logo --}}
         <div class="flex items-center gap-3 px-6 py-6 border-b border-white/10">
-            <div class="w-12 h-12 rounded-xl bg-white p-1.5 shadow-lg flex-shrink-0">
-                <img src="{{ asset('assets/logo-lanri.png') }}" alt="LAN RI" class="w-full h-full object-contain">
-            </div>
+            <img src="{{ asset('assets/logo-lanri.png') }}" alt="LAN RI" class="h-12 w-auto flex-shrink-0 object-contain brightness-0 invert">
             <div class="min-w-0">
                 <h2 class="text-base font-extrabold tracking-wide truncate">SSO PORTAL</h2>
                 <p class="text-[10px] text-blue-200 tracking-widest uppercase truncate">LAN RI · Pusjar SKMP</p>
@@ -63,10 +61,10 @@
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                 </button>
 
-                {{-- Title + Logo (desktop) --}}
-                <div class="hidden lg:flex items-center gap-3">
-                    <img src="{{ asset('assets/logo-lanri.png') }}" alt="LAN RI" class="w-8 h-8 object-contain">
-                    <div>
+                {{-- Title + Logo --}}
+                <div class="flex items-center gap-3">
+                    <img src="{{ asset('assets/lan.png') }}" alt="LAN RI" class="h-10 w-auto object-contain">
+                    <div class="hidden sm:block">
                         <h1 class="text-lg font-bold text-gray-800">Dashboard</h1>
                         <p class="text-xs text-gray-500">Kelola akses aplikasi Anda</p>
                     </div>
@@ -95,9 +93,6 @@
             {{-- Welcome banner --}}
             <div class="mb-8 rounded-2xl bg-gradient-to-r from-blue-900 via-blue-700 to-blue-500 text-white p-6 sm:p-8 relative overflow-hidden shadow-lg">
                 <div class="relative z-10 flex items-start gap-5">
-                    <div class="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-2xl p-2 shadow-xl flex-shrink-0">
-                        <img src="{{ asset('assets/logo-lanri.png') }}" alt="LAN RI" class="w-full h-full object-contain">
-                    </div>
                     <div class="flex-1 min-w-0">
                         <h2 class="text-2xl sm:text-3xl font-extrabold mb-2">Selamat Datang, <span id="welcomeName">User</span>!</h2>
                         <p class="text-blue-100 text-sm max-w-2xl">
@@ -132,6 +127,23 @@
                         <h4 class="font-bold text-gray-800 mb-1 group-hover:text-green-700 transition">SIKAP</h4>
                         <p class="text-xs text-gray-500 mb-4">Sistem Informasi Keuangan & Anggaran</p>
                         <div class="flex items-center gap-2 text-xs font-semibold text-green-600 group-hover:gap-3 transition-all">
+                            <span>Buka Aplikasi</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+                        </div>
+                    </div>
+                </button>
+
+                {{-- Card SIPERDI --}}
+                <button onclick="launchApp('siperdi')"
+                        class="group bg-white rounded-2xl shadow-sm hover:shadow-2xl border border-gray-100 hover:border-teal-200 p-6 text-left transition-all duration-300 hover:-translate-y-1 relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-br from-teal-50 to-transparent opacity-0 group-hover:opacity-100 transition"></div>
+                    <div class="relative">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-teal-400 to-teal-600 text-white flex items-center justify-center mb-4 shadow-lg shadow-teal-200">
+                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-1 group-hover:text-teal-700 transition">SIPERDI</h4>
+                        <p class="text-xs text-gray-500 mb-4">Sistem Informasi Perjalanan Dinas</p>
+                        <div class="flex items-center gap-2 text-xs font-semibold text-teal-600 group-hover:gap-3 transition-all">
                             <span>Buka Aplikasi</span>
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
                         </div>

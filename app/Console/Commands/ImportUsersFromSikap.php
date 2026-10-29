@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
 class ImportUsersFromSikap extends Command
 {
@@ -27,9 +26,6 @@ class ImportUsersFromSikap extends Command
         $this->info('🚀 Mulai import user dari SIKAP...');
         $this->newLine();
 
-        // ============================================
-        // 1. Ambil semua user dari database SIKAP
-        // ============================================
         try {
             $sikapUsers = DB::connection('sikap')->table('users')->get();
         } catch (\Exception $e) {
@@ -45,9 +41,6 @@ class ImportUsersFromSikap extends Command
         $this->info("Ditemukan {$sikapUsers->count()} user di SIKAP.");
         $this->newLine();
 
-        // ============================================
-        // 2. Loop & import satu per satu
-        // ============================================
         $imported = 0;
         $updated  = 0;
         $skipped  = 0;
@@ -61,7 +54,6 @@ class ImportUsersFromSikap extends Command
             }
 
             // Cek user sudah ada di SSO Server atau belum
-            // Prioritas cek: username dulu, baru email
             $existing = User::where('username', $sikapUser->username)->first();
 
             if (!$existing && !empty($sikapUser->email)) {
@@ -69,13 +61,12 @@ class ImportUsersFromSikap extends Command
             }
 
             if ($existing) {
-                // ============================================
-                // Update user yang sudah ada
-                // ============================================
+                // Update data termasuk password
                 $existing->update([
                     'name'     => $sikapUser->name     ?? $existing->name,
                     'email'    => $sikapUser->email    ?? $existing->email,
-                    'password' => $sikapUser->password, // copy hash langsung
+                    // Sinkronkan password SIKAP ke SSO
+                    'password' => $sikapUser->password, 
                 ]);
 
                 $updated++;
@@ -83,25 +74,21 @@ class ImportUsersFromSikap extends Command
                 continue;
             }
 
-            // ============================================
             // Buat user baru di SSO Server
-            // ============================================
             User::create([
                 'name'     => $sikapUser->name     ?? 'User',
                 'username' => $sikapUser->username,
                 'email'    => $sikapUser->email    ?? null,
-                'nip'      => $sikapUser->nip      ?? null,
-                'nik'      => $sikapUser->nik      ?? null,
-                'password' => $sikapUser->password, // copy hash langsung dari SIKAP
+                // Cek apakah tabel SIKAP punya kolom nip/nik sebelum mengambilnya
+                'nip'      => property_exists($sikapUser, 'nip') ? $sikapUser->nip : null,
+                'nik'      => property_exists($sikapUser, 'nik') ? $sikapUser->nik : null,
+                'password' => $sikapUser->password, 
             ]);
 
             $imported++;
             $this->info("✅ Import: {$sikapUser->username} ({$sikapUser->name})");
         }
 
-        // ============================================
-        // 3. Ringkasan
-        // ============================================
         $this->newLine();
         $this->info('🎉 Selesai!');
         $this->table(

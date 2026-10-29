@@ -14,7 +14,6 @@ return new class extends Migration
             $table->string('nip', 30)->unique()->nullable()->after('email');
             $table->string('nik', 30)->unique()->nullable()->after('nip');
             
-            // Email kita ubah jadi nullable (karena mungkin ada user tanpa email)
             $table->string('email')->nullable()->change();
         });
     }

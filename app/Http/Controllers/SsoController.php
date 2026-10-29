@@ -7,13 +7,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schema;
 
 class SsoController extends Controller
 {
     /**
-     * URL SSO Server
+     * URL SSO Server (SUDAH DIPERBAIKI KE PORT 8002)
      */
-    private string $ssoServerUrl = 'http://127.0.0.1:8001';
+    private string $ssoServerUrl = 'http://127.0.0.1:8002';
 
     /**
      * Terima token dari SSO Server, verifikasi, lalu login-kan user.
@@ -60,14 +61,14 @@ class SsoController extends Controller
                 $user = User::where('email', $ssoUser['email'])->first();
             }
 
-            // Coba berdasarkan username
+            // Coba berdasarkan username (Paling utama di SIKAP karena email sering null)
             if (!$user && !empty($ssoUser['username'])) {
                 $user = User::where('username', $ssoUser['username'])->first();
             }
 
             // Coba berdasarkan NIP (kalau SIKAP punya kolom nip)
             if (!$user && !empty($ssoUser['nip'])) {
-                if (\Schema::hasColumn('users', 'nip')) {
+                if (Schema::hasColumn('users', 'nip')) {
                     $user = User::where('nip', $ssoUser['nip'])->first();
                 }
             }
@@ -84,6 +85,11 @@ class SsoController extends Controller
                     'Akun Anda belum terdaftar di SIKAP. Hubungi Administrator.');
             }
 
+            // Cek apakah user aktif (sesuai kolom 'active' di tabel SIKAP)
+            if (isset($user->active) && !$user->active) {
+                return redirect('/login')->with('error', 'Akun Anda di SIKAP sedang tidak aktif.');
+            }
+
             // ============================================
             // 3. Auto-login di SIKAP
             // ============================================
@@ -92,12 +98,15 @@ class SsoController extends Controller
             // Regenerate session biar aman (cegah session fixation)
             $request->session()->regenerate();
 
-            Log::info('SSO: User berhasil auto-login', ['user_id' => $user->id]);
+            Log::info('SSO: User berhasil auto-login', [
+                'user_id' => $user->id,
+                'role' => $user->role
+            ]);
 
             // ============================================
-            // 4. Redirect ke dashboard SIKAP
+            // 4. Redirect ke dashboard SIKAP SESUAI ROLE
             // ============================================
-            return redirect()->intended('/dashboard');
+            return redirect($this->dashboardUrlFor($user));
 
         } catch (\Illuminate\Http\Client\ConnectionException $e) {
             Log::error('SSO: Tidak bisa konek ke SSO Server', ['error' => $e->getMessage()]);
@@ -109,5 +118,22 @@ class SsoController extends Controller
             ]);
             return redirect('/login')->with('error', 'Terjadi kesalahan saat verifikasi SSO.');
         }
+    }
+
+    /**
+     * Tentukan URL dashboard berdasarkan role user SIKAP.
+     */
+    private function dashboardUrlFor(User $user): string
+    {
+        // Sesuaikan dengan routing role yang ada di routes/web.php SIKAP
+        $role = $user->role ?? 'user';
+
+        return match ($role) {
+            'admin_keuangan' => '/admin',
+            'keuangan'       => '/keuangan',
+            'pimpinan'       => '/pimpinan',
+            'user'           => '/viewer', 
+            default          => '/viewer',
+        };
     }
 }

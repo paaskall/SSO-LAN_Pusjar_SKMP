@@ -26,6 +26,7 @@ Route::get('/sso/launch/{app}', function ($app) {
     // Daftar aplikasi klien & URL callback-nya
     $apps = [
         'keuangan' => 'http://127.0.0.1:8000/sso/callback',
+        'siperdi' => 'http://127.0.0.1:8001/sso/callback',
         // 'sdm'    => 'http://127.0.0.1:8002/sso/callback',
         // 'latjar' => 'http://127.0.0.1:8003/sso/callback',
         // 'corpu'  => 'http://127.0.0.1:8004/sso/callback',

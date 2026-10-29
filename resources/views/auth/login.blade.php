@@ -47,8 +47,8 @@
         {{-- ===== HEADER: Logo & Nama Sistem ===== --}}
         <div class="relative z-10">
             <div class="flex items-center gap-3">
-                <div class="w-14 h-14 rounded-2xl bg-white/95 p-2 shadow-lg">
-                    <img src="{{ asset('assets/logo-lanri.png') }}" alt="SSO" class="w-full h-full object-contain" />
+                <div class="w-14 h-14">
+                    <img src="{{ asset('assets/logo-lanri.png') }}" alt="SSO" class="w-full h-full object-contain brightness-0 invert drop-shadow-md" />
                 </div>
                 <div>
                     <h2 class="text-xl font-extrabold tracking-wide drop-shadow-md">SSO PORTAL</h2>
@@ -125,7 +125,7 @@
         {{-- Header Mobile --}}
         <div class="lg:hidden flex items-center justify-between px-6 pt-6 pb-2">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-blue-50 p-1.5">
+                <div class="w-10 h-10">
                     <img src="{{ asset('assets/logo-lanri.png') }}" alt="SSO" class="w-full h-full object-contain" />
                 </div>
                 <div>
