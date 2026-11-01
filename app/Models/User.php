@@ -5,12 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Passport\HasApiTokens;  // <-- Pastikan ini ada
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'name',
         'username',
@@ -18,18 +23,45 @@ class User extends Authenticatable
         'nip',
         'nik',
         'password',
+        'role',
     ];
 
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    protected function casts(): array
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
+
+    /**
+     * Relasi ke tabel user_app_access
+     */
+    public function appAccesses()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->hasMany(UserAppAccess::class);
+    }
+
+    /**
+     * Cek apakah user punya akses ke aplikasi tertentu
+     */
+    public function hasAppAccess($appSlug)
+    {
+        if ($this->role === 'super_admin') {
+            return true;
+        }
+        return $this->appAccesses()->where('app_slug', $appSlug)->exists();
     }
 }

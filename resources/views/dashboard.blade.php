@@ -19,7 +19,7 @@
 
         {{-- Navigation --}}
         <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
-            <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg bg-white/10 text-white font-medium text-sm transition hover:bg-white/15">
+            <a href="/dashboard" class="flex items-center gap-3 px-4 py-3 rounded-lg bg-white/10 text-white font-medium text-sm transition hover:bg-white/15">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                 Dashboard
             </a>
@@ -29,9 +29,10 @@
                 Akun Saya
             </a>
 
-            <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg text-blue-100 hover:bg-white/10 hover:text-white font-medium text-sm transition">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                Pengaturan
+            {{-- Menu Super Admin (Hanya muncul jika role = super_admin) --}}
+            <a href="/admin/users" id="menuAdmin" class="hidden items-center gap-3 px-4 py-3 rounded-lg text-blue-100 hover:bg-white/10 hover:text-white font-medium text-sm transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                Manajemen User
             </a>
 
             <div class="pt-4 mt-4 border-t border-white/10">
@@ -55,13 +56,10 @@
         {{-- Header --}}
         <header class="bg-white border-b border-gray-200 sticky top-0 z-20">
             <div class="px-4 sm:px-6 py-4 flex items-center justify-between gap-4">
-
-                {{-- Menu Button (mobile) --}}
                 <button onclick="toggleSidebar()" class="lg:hidden text-gray-600 hover:text-gray-900">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                 </button>
 
-                {{-- Title + Logo --}}
                 <div class="flex items-center gap-3">
                     <img src="{{ asset('assets/lan.png') }}" alt="LAN RI" class="h-10 w-auto object-contain">
                     <div class="hidden sm:block">
@@ -70,7 +68,6 @@
                     </div>
                 </div>
 
-                {{-- Right side --}}
                 <div class="flex items-center gap-3 ml-auto">
                     <div class="hidden sm:flex items-center gap-3 px-3 py-1.5 rounded-full bg-gray-50 border border-gray-200">
                         <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 text-white flex items-center justify-center text-xs font-bold" id="userAvatar">?</div>
@@ -89,7 +86,6 @@
 
         {{-- Content --}}
         <main class="flex-1 p-4 sm:p-6 lg:p-8">
-
             {{-- Welcome banner --}}
             <div class="mb-8 rounded-2xl bg-gradient-to-r from-blue-900 via-blue-700 to-blue-500 text-white p-6 sm:p-8 relative overflow-hidden shadow-lg">
                 <div class="relative z-10 flex items-start gap-5">
@@ -100,7 +96,6 @@
                         </p>
                     </div>
                 </div>
-                {{-- Dekorasi --}}
                 <div class="absolute -top-16 -right-16 w-64 h-64 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
                 <div class="absolute -bottom-20 -right-32 w-80 h-80 bg-blue-400/20 rounded-full blur-3xl pointer-events-none"></div>
             </div>
@@ -117,7 +112,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
 
                 {{-- Card Keuangan (SIKAP) --}}
-                <button onclick="launchApp('keuangan')"
+                <button id="card-keuangan" onclick="launchApp('keuangan')"
                         class="group bg-white rounded-2xl shadow-sm hover:shadow-2xl border border-gray-100 hover:border-green-200 p-6 text-left transition-all duration-300 hover:-translate-y-1 relative overflow-hidden">
                     <div class="absolute inset-0 bg-gradient-to-br from-green-50 to-transparent opacity-0 group-hover:opacity-100 transition"></div>
                     <div class="relative">
@@ -134,7 +129,7 @@
                 </button>
 
                 {{-- Card SIPERDI --}}
-                <button onclick="launchApp('siperdi')"
+                <button id="card-siperdi" onclick="launchApp('siperdi')"
                         class="group bg-white rounded-2xl shadow-sm hover:shadow-2xl border border-gray-100 hover:border-teal-200 p-6 text-left transition-all duration-300 hover:-translate-y-1 relative overflow-hidden">
                     <div class="absolute inset-0 bg-gradient-to-br from-teal-50 to-transparent opacity-0 group-hover:opacity-100 transition"></div>
                     <div class="relative">
@@ -151,7 +146,7 @@
                 </button>
 
                 {{-- Card SDM --}}
-                <button onclick="launchApp('sdm')"
+                <button id="card-sdm" onclick="launchApp('sdm')"
                         class="group bg-white rounded-2xl shadow-sm hover:shadow-2xl border border-gray-100 hover:border-blue-200 p-6 text-left transition-all duration-300 hover:-translate-y-1 relative overflow-hidden">
                     <div class="absolute inset-0 bg-gradient-to-br from-blue-50 to-transparent opacity-0 group-hover:opacity-100 transition"></div>
                     <div class="relative">
@@ -168,7 +163,7 @@
                 </button>
 
                 {{-- Card Latjar --}}
-                <button onclick="launchApp('latjar')"
+                <button id="card-latjar" onclick="launchApp('latjar')"
                         class="group bg-white rounded-2xl shadow-sm hover:shadow-2xl border border-gray-100 hover:border-orange-200 p-6 text-left transition-all duration-300 hover:-translate-y-1 relative overflow-hidden">
                     <div class="absolute inset-0 bg-gradient-to-br from-orange-50 to-transparent opacity-0 group-hover:opacity-100 transition"></div>
                     <div class="relative">
@@ -185,7 +180,7 @@
                 </button>
 
                 {{-- Card CORPU --}}
-                <button onclick="launchApp('corpu')"
+                <button id="card-corpu" onclick="launchApp('corpu')"
                         class="group bg-white rounded-2xl shadow-sm hover:shadow-2xl border border-gray-100 hover:border-purple-200 p-6 text-left transition-all duration-300 hover:-translate-y-1 relative overflow-hidden">
                     <div class="absolute inset-0 bg-gradient-to-br from-purple-50 to-transparent opacity-0 group-hover:opacity-100 transition"></div>
                     <div class="relative">
@@ -202,7 +197,7 @@
                 </button>
 
                 {{-- Card Kajian --}}
-                <button onclick="launchApp('kajian')"
+                <button id="card-kajian" onclick="launchApp('kajian')"
                         class="group bg-white rounded-2xl shadow-sm hover:shadow-2xl border border-gray-100 hover:border-pink-200 p-6 text-left transition-all duration-300 hover:-translate-y-1 relative overflow-hidden">
                     <div class="absolute inset-0 bg-gradient-to-br from-pink-50 to-transparent opacity-0 group-hover:opacity-100 transition"></div>
                     <div class="relative">
@@ -234,7 +229,7 @@
         overlay.classList.toggle('hidden');
     }
 
-    // ===== CEK LOGIN =====
+    // ===== CEK LOGIN & HAK AKSES =====
     const token = localStorage.getItem('access_token');
     const user = JSON.parse(localStorage.getItem('user') || '{}');
 
@@ -242,66 +237,70 @@
         window.location.href = '/login';
     } else {
         const name = user.name || 'User';
-        const role = user.role || 'Pengguna';
+        const role = user.role || 'user';
+        
+        // Ambil data apps
+        const userApps = user.apps || [];
 
+        // Set Nama & Role
         document.getElementById('userName').textContent = name;
         document.getElementById('welcomeName').textContent = name.split(' ')[0];
-        document.getElementById('userRole').textContent = role;
-
-        // Avatar inisial
+        document.getElementById('userRole').textContent = (role === 'super_admin') ? 'Super Admin' : 'Pengguna';
+        
         const initials = name.split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
         document.getElementById('userAvatar').textContent = initials;
+
+        // Tampilkan Menu Admin
+        if (role === 'super_admin') {
+            document.getElementById('menuAdmin').classList.remove('hidden');
+            document.getElementById('menuAdmin').classList.add('flex');
+        }
+
+        // ============================================
+        // LOGIKA PENYEMBUNYIAN CARD YANG SUDAH DIPERBAIKI
+        // ============================================
+        let allowedSlugs = [];
+        if (Array.isArray(userApps)) {
+            allowedSlugs = userApps.map(item => {
+                if (typeof item === 'string') return item; // Format lama
+                return item.slug; // Format baru (object)
+            });
+        }
+
+        const allCards = ['keuangan', 'siperdi', 'sdm', 'latjar', 'corpu', 'kajian'];
+        
+        allCards.forEach(app => {
+            const card = document.getElementById(`card-${app}`);
+            if (card) {
+                // Super admin dapat melihat semua card
+                if (role === 'super_admin') {
+                    card.style.display = 'block';
+                } 
+                // User biasa hanya melihat card yang ada di allowedSlugs
+                else if (allowedSlugs.includes(app)) {
+                    card.style.display = 'block';
+                } 
+                // Jika tidak punya akses, sembunyikan
+                else {
+                    card.style.display = 'none';
+                }
+            }
+        });
     }
 
     // ===== FUNGSI LAUNCH APP =====
     function launchApp(appName) {
-        const token = localStorage.getItem('access_token');
-
         if (!token) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Sesi Berakhir',
-                text: 'Silakan login ulang.',
-                confirmButtonColor: '#1e40af'
-            }).then(() => {
-                window.location.href = '/login';
-            });
+            Swal.fire({ icon: 'error', title: 'Sesi Berakhir', text: 'Silakan login ulang.', confirmButtonColor: '#1e40af' })
+                .then(() => { window.location.href = '/login'; });
             return;
         }
-
         window.location.href = `/sso/launch/${appName}?token=${encodeURIComponent(token)}`;
     }
 
     // ===== LOGOUT =====
-    document.getElementById('logoutBtn').addEventListener('click', async function() {
-        const result = await Swal.fire({
-            icon: 'question',
-            title: 'Logout?',
-            text: 'Anda akan keluar dari SSO Portal.',
-            showCancelButton: true,
-            confirmButtonText: 'Ya, Logout',
-            cancelButtonText: 'Batal',
-            confirmButtonColor: '#dc2626',
-            cancelButtonColor: '#6b7280'
-        });
-
-        if (!result.isConfirmed) return;
-
-        try {
-            await fetch('/api/logout', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Authorization': 'Bearer ' + token
-                }
-            });
-        } catch (e) {
-            console.error('Logout error:', e);
-        }
-
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('user');
-        window.location.href = '/login';
+    document.getElementById('logoutBtn').addEventListener('click', function() {
+        window.location.href = '/sso-logout';
     });
 </script>
 @endpush
